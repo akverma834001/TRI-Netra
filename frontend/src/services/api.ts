@@ -6,7 +6,11 @@ import {
   PatientHistoryResponse, DemoStatus
 } from '../types';
 
-const API_BASE = "http://localhost:8000";
+const API_BASE = (
+  (import.meta as any).env?.VITE_API_URL ||
+  (import.meta as any).env?.VITE_API_BASE_URL ||
+  ((import.meta as any).env?.DEV ? "http://localhost:8000" : "")
+).replace(/\/+$/, "");
 
 let authToken: string | null = localStorage.getItem('trinetra_token');
 
@@ -483,7 +487,11 @@ export const api = {
 
   getImageUrl: (relPath: string) => {
     if (!relPath) return '';
-    if (relPath.startsWith('http')) return relPath;
-    return `${API_BASE}${relPath.startsWith('/') ? '' : '/'}${relPath}`;
+    if (relPath.startsWith('http://') || relPath.startsWith('https://')) return relPath;
+    let cleanPath = relPath.startsWith('/') ? relPath : `/${relPath}`;
+    if (!cleanPath.startsWith('/storage/')) {
+      cleanPath = `/storage${cleanPath}`;
+    }
+    return `${API_BASE}${cleanPath}`;
   }
 };

@@ -182,7 +182,7 @@ async def auto_capture_frame(
     
     if existing_img:
         eye_image = existing_img
-        eye_image.original_path = f"storage/original/{original_filename}"
+        eye_image.original_path = f"/storage/original/{original_filename}"
         eye_image.quality_score = quality_res["quality_score"]
         eye_image.quality_status = quality_res["quality_status"]
         eye_image.focus_score = quality_res["focus_score"]
@@ -204,7 +204,7 @@ async def auto_capture_frame(
             id=image_id,
             screening_id=screening_id,
             eye=eye,
-            original_path=f"storage/original/{original_filename}",
+            original_path=f"/storage/original/{original_filename}",
             quality_score=quality_res["quality_score"],
             quality_status=quality_res["quality_status"],
             focus_score=quality_res["focus_score"],
@@ -255,7 +255,7 @@ async def auto_capture_frame(
         )
         
         # Update EyeImage with processed artifact
-        eye_image.processed_path = pipeline_result.get("urls", {}).get("enhanced_image_url", f"storage/processed/{eye_image.id}_processed.jpg")
+        eye_image.processed_path = pipeline_result.get("urls", {}).get("enhanced_image_url", f"/storage/processed/{eye_image.id}_processed.jpg")
         
         # Store AIResult
         ai_res_data = pipeline_result["ai_result"]
